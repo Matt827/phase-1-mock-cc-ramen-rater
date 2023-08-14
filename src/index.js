@@ -1,55 +1,54 @@
-const baseURl = "http://localhost:3000/ramens"
-const ramenMenuDiv = document.querySelector('#ramen-menu')
-const ramenDetailDiv = document.querySelector('#ramen-detail')
-const newRamenForm = document.querySelector('#new-ramen')
+//constants
+const url = "http://localhost:3000/ramens"
+const ramenMenu = document.querySelector("#ramen-menu")
+const ramenform = document.querySelector("#new-ramen")
 
-fetch(`${baseURl}`)
-.then(response => response.json())
-.then(ramen => {
-    ramen.forEach(renderRamen)
+fetch(url)
+.then(res => res.json())
+.then(data => {
+    data.forEach(renderRamenMenu)
 })
 
-function renderRamen(ramen) {
-    let ramenImage = document.createElement('img')
-    ramenImage.src = ramen.image
-    ramenMenuDiv.append(ramenImage)
-    ramenImage.addEventListener('click', () => {
-        displayRamenDetails(ramen)
+
+function renderRamenMenu(ramen){
+    let img = document.createElement('img')
+    img.src = ramen.image
+    ramenMenu.append(img)
+    img.addEventListener('click', e => {
+        displayRamenHero(ramen)
     })
 }
 
-function displayRamenDetails(ramen) {
-    let ramenName = document.getElementById("detail-name")
-    let ramenRest = document.getElementById("detail-rest")
-    let ramenDetailImage = document.getElementById("detail-image")
-    let ramenRating = document.getElementById("rating-display")
-    let ramenComment = document.getElementById("comment-display")
+function displayRamenHero(ramen){
+    let detailImage = document.querySelector("#detail-image")
+    let detailName = document.querySelector("#name")
+    let detailRestaurant = document.querySelector("#restaurant")
+    let detailRating = document.querySelector("#rating-display")
+    let detailComment = document.querySelector("#comment-display")
 
-    ramenName.innerText = ramen.name
-    ramenRest.innerText = ramen.restaurant
-    ramenDetailImage.src = ramen.image
-    ramenRating.innerText = ramen.rating
-    ramenComment.innerText = ramen.comment
+    detailImage.src = ramen.image
+    detailName.textContent = ramen.name
+    detailRestaurant.textContent = ramen.restaurant
+    detailRating.textContent = ramen.rating
+    detailComment.textContent = ramen.comment
 }
 
-newRamenForm.addEventListener('submit', e => {
+ramenform.addEventListener('submit', e => {
     e.preventDefault()
-    let newRamenName = document.getElementById("new-name").value
-    let newRamenRestaurant = document.getElementById("new-restaurant").value
-    let newRamenImage = document.getElementById("new-image").value
-    let newRamenRating = document.getElementById("new-rating").value
-    let newRamenComment = document.getElementById("new-comment").value
+
+    let newName = e.target.name.value
+    let newRestaurant = e.target.restaurant.value
+    let newImage = e.target.image.value
+    let newRating = e.target.rating.value
+    let newComment = e.target['new-comment'].value
 
     const newRamen = {
-        "name": newRamenName,
-        "image": newRamenImage,
-        "restaurant": newRamenRestaurant,
-        "rating": newRamenRating,
-        "comment": newRamenComment
+        "name": newName,
+        "image": newImage,
+        "restaurant": newRestaurant,
+        "rating": newRating,
+        "comment": newComment
     }
 
-    renderRamen(newRamen)
-
+    renderRamenMenu(newRamen)
 })
-
-
